@@ -9,9 +9,12 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import org.signal.core.util.logging.Log
@@ -48,6 +51,19 @@ class WelcomeFragment : LoggingFragment(R.layout.fragment_registration_welcome) 
       }
       else -> Log.w(TAG, "Backup restoration activity ended with unknown result code: $resultCode")
     }
+  }
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+
+    WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
+    if( android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P ) {
+      requireActivity().window.attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+    }
+
+//    enableEdgeToEdge()
+
+    Toast.makeText(requireContext(), "WelcomeFragment", Toast.LENGTH_SHORT).show()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

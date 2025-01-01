@@ -16,12 +16,19 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.systemBars
 import androidx.core.view.MenuProvider
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -88,6 +95,31 @@ class EnterPhoneNumberFragment : LoggingFragment(R.layout.fragment_registration_
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+
+    ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
+      val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+      val bars = windowInsets.getInsets(
+        WindowInsetsCompat.Type.systemBars()
+          or WindowInsetsCompat.Type.displayCutout()
+      )
+
+      v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+        topMargin = insets.top
+        leftMargin = insets.left
+        bottomMargin = insets.bottom
+        rightMargin = insets.right
+      }
+
+//      landscape insets to prevent camera cutout obstruction
+      v.updatePadding(
+        left = bars.left,
+        right = bars.right,
+      )
+
+      WindowInsetsCompat.CONSUMED
+    }
+
     setDebugLogSubmitMultiTapView(binding.verifyHeader)
     requireActivity().onBackPressedDispatcher.addCallback(
       viewLifecycleOwner,
@@ -297,11 +329,13 @@ class EnterPhoneNumberFragment : LoggingFragment(R.layout.fragment_registration_
 
       EnterPhoneNumberState.Error.PLAY_SERVICES_TRANSIENT -> {
         MaterialAlertDialogBuilder(requireContext()).apply {
+//          setBackgroundInsetEnd(0)
           setTitle(R.string.RegistrationActivity_play_services_error)
           setMessage(R.string.RegistrationActivity_google_play_services_is_updating_or_unavailable)
           setPositiveButton(android.R.string.ok) { _, _ -> fragmentViewModel.clearError() }
           setOnCancelListener { fragmentViewModel.clearError() }
           setOnDismissListener { fragmentViewModel.clearError() }
+
           show()
         }
       }

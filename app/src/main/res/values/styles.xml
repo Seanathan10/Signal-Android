@@ -88,6 +88,9 @@
         <item name="android:actionOverflowButtonStyle">@style/Signal.Toolbar.Overflow</item>
         <item name="actionOverflowMenuStyle">@style/Signal.DayNight.Popup.OverflowMenu</item>
         <item name="android:itemTextAppearance">@style/Signal.Text.BodyLarge</item>
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
     <style name="TextSecure.LightActionBar"
@@ -100,6 +103,9 @@
         <item name="actionOverflowButtonStyle">@style/Signal.Toolbar.Overflow.Light</item>
         <item name="android:actionOverflowButtonStyle">@style/Signal.Toolbar.Overflow.Light</item>
         <item name="android:itemTextAppearance">@style/Signal.Text.BodyLarge</item>
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
     <style name="TextSecure.LightActionBar.Settings">
@@ -414,6 +420,9 @@
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">24sp</item>
         <item name="android:gravity">center</item>
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
     <style name="MediaPreviewButton">
         <item name="android:layout_marginEnd">@dimen/media_preview_button_horizontal_margin</item>

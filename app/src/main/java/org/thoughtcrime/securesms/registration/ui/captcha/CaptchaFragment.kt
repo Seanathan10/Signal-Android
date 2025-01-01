@@ -8,10 +8,16 @@ package org.thoughtcrime.securesms.registration.ui.captcha
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.navigation.fragment.findNavController
 import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.LoggingFragment
@@ -35,6 +41,32 @@ abstract class CaptchaFragment : LoggingFragment(R.layout.fragment_registration_
     super.onViewCreated(view, savedInstanceState)
     binding.registrationCaptchaWebView.settings.javaScriptEnabled = true
     binding.registrationCaptchaWebView.clearCache(true)
+
+    WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
+
+    ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
+      val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+      val bars = windowInsets.getInsets(
+        WindowInsetsCompat.Type.systemBars()
+          or WindowInsetsCompat.Type.displayCutout()
+      )
+
+      v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+        topMargin = insets.top
+        leftMargin = insets.left
+        bottomMargin = insets.bottom
+        rightMargin = insets.right
+      }
+
+//      landscape insets to prevent camera cutout obstruction
+      v.updatePadding(
+        left = bars.left,
+        right = bars.right,
+      )
+
+      WindowInsetsCompat.CONSUMED
+    }
 
     binding.registrationCaptchaWebView.webViewClient = object : WebViewClient() {
       @Deprecated("Deprecated in Java")

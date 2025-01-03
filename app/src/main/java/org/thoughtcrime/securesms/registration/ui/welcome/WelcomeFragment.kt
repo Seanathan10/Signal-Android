@@ -66,11 +66,6 @@ class WelcomeFragment : LoggingFragment(R.layout.fragment_registration_welcome) 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
-    if( android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P ) {
-      requireActivity().window.attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
-    }
-    
     setDebugLogSubmitMultiTapView(binding.image)
     setDebugLogSubmitMultiTapView(binding.title)
     binding.welcomeContinueButton.setOnClickListener { onContinueClicked() }

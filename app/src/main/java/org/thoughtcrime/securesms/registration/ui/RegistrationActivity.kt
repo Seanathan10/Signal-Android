@@ -8,7 +8,14 @@ package org.thoughtcrime.securesms.registration.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.ActivityNavigator
@@ -47,6 +54,9 @@ class RegistrationActivity : BaseActivity() {
     dynamicTheme.onCreate(this)
 
     super.onCreate(savedInstanceState)
+
+    enableEdgeToEdge()
+
     setContentView(R.layout.activity_registration_navigation_v2)
 
     sharedViewModel.isReregister = intent.getBooleanExtra(RE_REGISTRATION_EXTRA, false)

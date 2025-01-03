@@ -8,8 +8,14 @@ package org.thoughtcrime.securesms.registration.ui.entercode
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
@@ -72,6 +78,32 @@ class EnterCodeFragment : LoggingFragment(R.layout.fragment_registration_enter_c
         }
       }
     )
+
+//    TODO: the numbers on the keyboard have their ripple effects cut off by the system navgieation bar
+
+    ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
+      val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+      val bars = windowInsets.getInsets(
+        WindowInsetsCompat.Type.systemBars()
+          or WindowInsetsCompat.Type.displayCutout()
+      )
+
+      v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+        topMargin = insets.top
+        leftMargin = insets.left
+        bottomMargin = insets.bottom
+        rightMargin = insets.right
+      }
+
+//      landscape insets to prevent camera cutout obstruction
+      v.updatePadding(
+        left = bars.left,
+        right = bars.right,
+      )
+
+      WindowInsetsCompat.CONSUMED
+    }
 
     binding.wrongNumber.setOnClickListener {
       popBackStack()

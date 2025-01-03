@@ -9,8 +9,14 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
 import org.thoughtcrime.securesms.LoggingFragment
 import org.thoughtcrime.securesms.R
@@ -25,6 +31,30 @@ class AccountLockedFragment : LoggingFragment(R.layout.account_locked_fragment) 
   private val viewModel by activityViewModels<RegistrationViewModel>()
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+
+    ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
+      val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+      val bars = windowInsets.getInsets(
+        WindowInsetsCompat.Type.systemBars()
+          or WindowInsetsCompat.Type.displayCutout()
+      )
+
+      v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+        topMargin = insets.top
+        leftMargin = insets.left
+        bottomMargin = insets.bottom
+        rightMargin = insets.right
+      }
+
+//      landscape insets to prevent camera cutout obstruction
+      v.updatePadding(
+        left = bars.left,
+        right = bars.right,
+      )
+
+      WindowInsetsCompat.CONSUMED
+    }
 
     setDebugLogSubmitMultiTapView(view.findViewById(R.id.account_locked_title))
 

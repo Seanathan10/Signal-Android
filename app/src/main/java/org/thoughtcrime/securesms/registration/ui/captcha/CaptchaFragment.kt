@@ -42,8 +42,6 @@ abstract class CaptchaFragment : LoggingFragment(R.layout.fragment_registration_
     binding.registrationCaptchaWebView.settings.javaScriptEnabled = true
     binding.registrationCaptchaWebView.clearCache(true)
 
-    WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
-
     ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
       val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
 
